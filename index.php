@@ -2,42 +2,58 @@
 
 require 'flight/Flight.php';  /* framework */
 
-// Register class with constructor parameters
-Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=api', 'root', ''));
+//*TODO: usando el framework de flight la función register hace la conexción a la base de datos 
+//*? db = user base de datos, 'PDO' = tipo de conexción de php y dentro de un array enviamos los parametros de la base de datos tales como direccion ip nombre de la base de datos y el usuario con la contraseña.
 
-/**LEER LOS DATOS Y LOS MUESTRA A CUALQUIER INTERFAZ */
-Flight::route('GET /usuarios', function () {
-    $sentencia = Flight::db()->prepare("SELECT * FROM `usuarios`");
-    $sentencia->execute();
-    $datos = $sentencia->fetchAll();
-    Flight::json($datos);
+Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=my_user_db', 'root', ''));
+
+//**LEER LOS DATOS Y LOS MUESTRA A CUALQUIER INTERFAZ */
+//*?Flight router ----> Bajo escena este metodo simplifica las propiedades que se colocan generalmente a la hora de realizar peticiones a las bases de datos ahorra mucho codigo php pero por debajo realiza todas esas peticiones con sus metodos y susparametros */
+
+Flight::route('GET /users', function () {
+    $sentencia = Flight::db()->prepare("SELECT * FROM `users`");
+    $sentencia->execute(); //*?  */
+    $datos = $sentencia->fetchAll(); //*? devuelve todos los datos con la instrucción fetchALL*/
+    Flight::json($datos); //*? pasamos datos a un formato JSON el cual facilita la lectura de los mismos//
 });
 
-/** Recepciona los datos por método POST */
-Flight::route('POST /usuarios', function () {
 
-    $nombres = (Flight::request()->data->nombres);
-    $apellido = (Flight::request()->data->apellido);
-    $correo = (Flight::request()->data->correo);
-    $edad = (Flight::request()->data->edad);
+//*Recepciona los datos por método POST y hace una incerpción a la base de datos*/
+//TODO:  'NAMES': 'Ivan'
+//TODO:  'LASTNAMES': 'Ortega'
+//TODO:  'DOCUMENT_ID': '1118307852'
+//TODO:  'EMAIL': 'ivanortega@hotmail.com'
 
-    $sql = "INSERT INTO usuarios (nombres,apellido,correo,edad) VALUES(?,?,?,?)";
+Flight::route('POST /users', function () {
+
+    $name = (Flight::request()->data->NAMES);
+    $lastName = (Flight::request()->data->LASTNAMES);
+    $document_id = (Flight::request()->data->DOCUMENT_ID);
+    $email = (Flight::request()->data->EMAIL);
+
+    $sql = "INSERT INTO users (NAMES, LASTNAMES, DOCUMENT_ID, EMAIL) VALUES(?,?,?,?)";
+
     $sentencia = Flight::db()->prepare($sql);
-    $sentencia->bindParam(1, $nombres);
-    $sentencia->bindParam(2, $apellido);
-    $sentencia->bindParam(3, $correo);
-    $sentencia->bindParam(4, $edad);
+
+    //*TODO: PASO LOS PARAMETROS */
+    $sentencia->bindParam(1, $name);
+    $sentencia->bindParam(2, $lastName);
+    $sentencia->bindParam(3, $document_id);
+    $sentencia->bindParam(4, $email);
 
     $sentencia->execute();
-
-    Flight::json(["Alumno agregado..."]);
+    
+    Flight::json(["Usuario Agregado..."]);
 });
 
-//Borrar Registro
-Flight::route('DELETE /usuarios', function () {
-    $id = (Flight::request()->data->id);
+//*Borrar Registro
 
-    $sql = "DELETE FROM usuarios WHERE id=?";
+Flight::route('DELETE /users', function () {
+
+    $id = (Flight::request()->data->ID);
+
+    $sql = "DELETE FROM users WHERE id=?";
+
     $sentencia = Flight::db()->prepare($sql);
     $sentencia->bindParam(1, $id);
     $sentencia->execute();
@@ -45,28 +61,32 @@ Flight::route('DELETE /usuarios', function () {
     Flight::json(["Alumno Eliminado..."]);
 });
 
-//Actualiza Registros
-Flight::route('PUT /usuarios', function () {
+// //Actualiza Registros
+// Flight::route('PUT /usuarios', function () {
 
-    $nombres = (Flight::request()->data->nombres);
-    $apellido = (Flight::request()->data->apellido);
-    $correo = (Flight::request()->data->correo);
-    $edad = (Flight::request()->data->edad);
-    $id = (Flight::request()->data->id);
+//     $nombres = (Flight::request()->data->nombres);
+//     $apellido = (Flight::request()->data->apellido);
+//     $correo = (Flight::request()->data->correo);
+//     $edad = (Flight::request()->data->edad);
+//     $id = (Flight::request()->data->id);
 
-    $sql = "UPDATE usuarios SET nombres=?,apellido=?,correo=?,edad=? WHERE id=?";
+//     $sql = "UPDATE usuarios SET nombres=?,apellido=?,correo=?,edad=? WHERE id=?";
 
-    $sentencia = Flight::db()->prepare($sql);
+//     $sentencia = Flight::db()->prepare($sql);
 
-    $sentencia->bindParam(1, $nombres);
-    $sentencia->bindParam(2, $apellido);
-    $sentencia->bindParam(3, $correo);
-    $sentencia->bindParam(4, $edad);
-    $sentencia->bindParam(5, $id);
+//     $sentencia->bindParam(1, $nombres);
+//     $sentencia->bindParam(2, $apellido);
+//     $sentencia->bindParam(3, $correo);
+//     $sentencia->bindParam(4, $edad);
+//     $sentencia->bindParam(5, $id);
 
-    $sentencia->execute();
+//     $sentencia->execute();
 
-    Flight::json(["Alumno Actualizado..."]);
+//     Flight::json(["Alumno Actualizado..."]);
+// });
+
+Flight::route('/', function () {
+    echo 'flight';
 });
 
 Flight::start();
