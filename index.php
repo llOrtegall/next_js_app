@@ -42,7 +42,7 @@ Flight::route('POST /users', function () {
     $sentencia->bindParam(4, $email);
 
     $sentencia->execute();
-    
+
     Flight::json(["Usuario Agregado..."]);
 });
 
@@ -61,32 +61,29 @@ Flight::route('DELETE /users', function () {
     Flight::json(["Alumno Eliminado..."]);
 });
 
-// //Actualiza Registros
-// Flight::route('PUT /usuarios', function () {
 
-//     $nombres = (Flight::request()->data->nombres);
-//     $apellido = (Flight::request()->data->apellido);
-//     $correo = (Flight::request()->data->correo);
-//     $edad = (Flight::request()->data->edad);
-//     $id = (Flight::request()->data->id);
+//*Actualiza Registros
+Flight::route('PUT /users', function () {
 
-//     $sql = "UPDATE usuarios SET nombres=?,apellido=?,correo=?,edad=? WHERE id=?";
+    $id = (Flight::request()->data->ID);
+    $name = (Flight::request()->data->NAMES);
+    $lastName = (Flight::request()->data->LASTNAMES);
+    $document_id = (Flight::request()->data->DOCUMENT_ID);
+    $email = (Flight::request()->data->EMAIL);
 
-//     $sentencia = Flight::db()->prepare($sql);
+    $sql = "UPDATE users SET NAMES=?,LASTNAMES=?,DOCUMENT_ID=?,EMAIL=? WHERE ID=?";
 
-//     $sentencia->bindParam(1, $nombres);
-//     $sentencia->bindParam(2, $apellido);
-//     $sentencia->bindParam(3, $correo);
-//     $sentencia->bindParam(4, $edad);
-//     $sentencia->bindParam(5, $id);
+    $sentencia = Flight::db()->prepare($sql);
 
-//     $sentencia->execute();
+    $sentencia->bindParam(1, $id);
+    $sentencia->bindParam(2, $name);
+    $sentencia->bindParam(3, $lastName);
+    $sentencia->bindParam(4, $document_id);
+    $sentencia->bindParam(5, $email);
+    
+    $sentencia->execute();
 
-//     Flight::json(["Alumno Actualizado..."]);
-// });
-
-Flight::route('/', function () {
-    echo 'flight';
+    Flight::json(["Alumno Actualizado..."]);
 });
 
 Flight::start();
