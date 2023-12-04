@@ -42,6 +42,5 @@ export const login = async (req, res) => {
 
 export const register = async (req, res) => {
   console.log(req.body)
-  const { nombres, apellidos, telefono, correo, empresa, proceso, rol } = req.body
-    
+  const { nombres, apellidos, documento, telefono, correo, empresa, proceso, rol } = req.body
 }
