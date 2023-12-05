@@ -23,7 +23,7 @@ export const getUsers = async (req, res) => {
       delete element.id
     })
 
-    return res.status(200).json({ result })
+    return res.status(200).json(result)
   } catch (error) {
     pool.end()
     return res.status(500).json({ error: 'Error al obtener los usuarios' })
@@ -51,6 +51,12 @@ export const login = async (req, res) => {
     if (!passwordMatches) {
       return res.status(401).json({ error: 'Clave Invalida Retifiquela' })
     }
+
+    const state = State({ estado: result[0].estado })
+    if (state === 'Inactivo') {
+      return res.status(401).json({ error: 'El Usuario se encuentra Inactivo' })
+    }
+
     const { nombres, apellidos, username, telefono, correo, empresa, proceso, rol } = result[0]
     const token = jwt.sign({ nombres, apellidos, username, telefono, correo, empresa, proceso, rol }, JWT_SECRET)
     const empresahas = Company({ empresa }); const procesohas = Proceso({ proceso })
