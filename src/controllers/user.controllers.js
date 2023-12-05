@@ -14,9 +14,14 @@ export const getUsers = async (req, res) => {
   const pool = await connection()
 
   try {
-    const [result] = await pool.query('SELECT * FROM login_chat')
-    console.log(result)
-    /// const empresahas = Company({ empresa }); const procesohas = Proceso({ proceso }); const hasState = State({ estado })
+    const [result] = await pool.query('SELECT *, BIN_TO_UUID(id) FROM login_chat')
+
+    result.forEach((element) => {
+      element.estado = State({ estado: element.estado })
+      element.empresa = Company({ empresa: element.empresa })
+      element.proceso = Proceso({ proceso: element.proceso })
+      delete element.id
+    })
 
     return res.status(200).json({ result })
   } catch (error) {
