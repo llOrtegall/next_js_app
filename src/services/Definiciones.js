@@ -30,3 +30,11 @@ export function Proceso ({ proceso }) {
     return 'Cumplimiento'
   }
 }
+
+export function State ({ estado }) {
+  if (estado === 0) {
+    return 'Inactivo'
+  } else if (estado === 1) {
+    return 'Activo'
+  }
+}
