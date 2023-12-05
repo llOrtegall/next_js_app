@@ -1,8 +1,9 @@
+import { Proceso, Company } from '../services/Definiciones.js'
 import { connection } from '../databases/mysqlConection.js'
+import { ValidateUser } from '../Schemas/UserSchema.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import env from 'dotenv'
-import { Proceso, Company } from '../services/Definiciones.js'
 
 env.config()
 
@@ -41,6 +42,21 @@ export const login = async (req, res) => {
 }
 
 export const register = async (req, res) => {
-  console.log(req.body)
-  const { nombres, apellidos, documento, telefono, correo, empresa, proceso, rol } = req.body
+  // TODO: Validar que lleguen los datos requeridos y de forma correcta
+  const result = await ValidateUser(req.body)
+
+  if (result.error) {
+    return res.status(400).json({ error: result.error })
+  }
+
+  const pool = await connection()
+
+  try {
+    const { nombres, apellidos, documento, telefono, correo, empresa, proceso, rol } = result.data
+    const password = `CP${documento.toString().slice(-3)}`
+    const username = `CP${documento.toString()}`
+    const passwordHash = await bcrypt.hash(password, 10)
+  } catch (error) {
+
+  }
 }
