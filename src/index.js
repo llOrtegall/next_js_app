@@ -1,5 +1,6 @@
 import { ConnectMongoDB } from './Databases/ConnectionMongoDB.js'
 import { sucursalesRouter } from './Routes/sucurales.routes.js'
+import { itemsRouter } from './Routes/items.routes.js'
 import express from 'express'
 import cors from 'cors'
 
@@ -16,11 +17,8 @@ app.use(cors({
 
 ConnectMongoDB()
 
-app.get('/', (req, res) => {
-  res.send('Hello World')
-})
-
 app.use(sucursalesRouter)
+app.use(itemsRouter)
 
 app.listen(3000, () => {
   console.log('Server running on: http://localhost:3000')

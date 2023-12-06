@@ -5,6 +5,7 @@ export const createSucursal = async (req, res) => {
   const newSucursal = new SucursalModel({ nombre, direccion, sucursal })
   try {
     const result = await newSucursal.save()
+    console.log(result)
     return res.status(201).json(result)
   } catch (error) {
     return res.status(409).json({ message: error.message })

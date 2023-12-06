@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const URI = 'mongodb://127.0.0.1:27017/items'
+const URI = 'mongodb://127.0.0.1:27017/company'
 
 export const ConnectMongoDB = async () => {
   await mongoose.connect(URI)

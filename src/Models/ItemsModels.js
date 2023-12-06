@@ -22,7 +22,7 @@ const ItemsSchema = new Schema({
   estado: { type: Number, required: true, enum: Object.keys(Estado) },
   descripcion: { type: String },
   precio: { type: Number, required: true },
-  sucursal: { type: Schema.Types.ObjectId, ref: 'Sucursal', required: true }
+  sucursal: { type: Schema.Types.ObjectId, ref: 'sucursales', required: true }
 }, { timestamps: true })
 
-export const ActivoModel = model('Activo', ItemsSchema)
+export const ActivoModel = model('items', ItemsSchema)
