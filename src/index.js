@@ -1,5 +1,5 @@
 import express from 'express'
-import { ConnectMongoDB } from './Databases/ConnectionMongoDB'
+import { ConnectMongoDB } from './Databases/ConnectionMongoDB.js'
 
 const app = express()
 
@@ -10,5 +10,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(3000, () => {
-  console.log('Server running on port 3000')
+  console.log('Server running on: http://localhost:3000')
 })
