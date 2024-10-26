@@ -1,4 +1,17 @@
+'use client';
+
+import { useEffect } from "react";
+
+
 export default function Home() {
+
+  useEffect(() => {
+    fetch('/api/user', { method: 'GET' })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.log(error));
+  }, []);
+
   return (
     <div>
       <h1>Home</h1>
