@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
-import SignIn from "./components/sing-in";
-import SingOut from "./components/sing-out";
+import SignIn from "@/components/sing-in";
+import SingOut from "@/components/sing-out";
 
 export default async function Home() {
   const session = await auth()
