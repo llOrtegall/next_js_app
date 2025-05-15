@@ -1,6 +1,6 @@
+import DashboarPage from "@/app/dashboard";
+import LoginPage from "./login/page";
 import { auth } from "@/lib/auth";
-import SignIn from "@/components/sing-in";
-import SingOut from "@/components/sing-out";
 
 export default async function Home() {
   const session = await auth()
@@ -8,12 +8,11 @@ export default async function Home() {
   return (
     <section>
       {session ? (
-        <div>
-          <p>welcome {session.user?.name}</p>
-          <SingOut />
-        </div>
+        <DashboarPage />
       ) : (
-        <SignIn />
+        <section className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+          <LoginPage />
+        </section>
       )}
     </section>
   );
